@@ -1,0 +1,49 @@
+# RetailIQ GIS – Root .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+pip-wheel-metadata/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Temp / data
+.tmp/
+*.tmp
+*.log
+*.dump
+*.sql.bak
+
+# Docker volumes
+pgdata/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Node (for frontend)
+node_modules/
+.next/
+out/

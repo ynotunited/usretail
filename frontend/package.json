@@ -1,0 +1,39 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "test:playwright": "node scripts/run-playwright.mjs",
+    "test:playwright:core": "playwright test",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:e2e": "cypress run",
+    "test:a11y": "cypress run --spec 'cypress/e2e/audit.cy.ts'"
+  },
+  "dependencies": {
+    "lucide-react": "^1.21.0",
+    "maplibre-gl": "^5.24.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-map-gl": "^8.1.1",
+    "react-router-dom": "^7.18.0"
+  },
+  "devDependencies": {
+    "@axe-core/react": "^4.12.1",
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "cypress": "^15.18.0",
+    "cypress-axe": "^1.7.0",
+    "oxlint": "^1.69.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.0"
+  }
+}
