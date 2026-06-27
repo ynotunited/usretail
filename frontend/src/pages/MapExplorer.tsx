@@ -14,7 +14,8 @@ const INITIAL_VIEW_STATE = {
 const MAP_STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 
 const MapExplorer: React.FC = () => {
-  const [showLayerPanel, setShowLayerPanel] = useState(true);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
+  const [showLayerPanel, setShowLayerPanel] = useState(() => typeof window !== 'undefined' ? window.innerWidth > 768 : false);
   const [layerVisibility, setLayerVisibility] = useState({
     competitorDensity: true,
     populationDensity: true,
@@ -48,28 +49,59 @@ const MapExplorer: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      setShowLayerPanel((current) => (mobile ? current : true));
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const visibleLayers = Object.values(layerVisibility).filter(Boolean).length;
 
   return (
-    <div className="map-explorer-container" style={{ display: 'flex', height: '100%', width: '100%', position: 'relative' }}>
+    <div
+      className="map-explorer-container"
+      style={{
+        display: 'flex',
+        height: '100%',
+        width: '100%',
+        position: 'relative',
+        paddingBottom: isMobile ? '88px' : '0',
+      }}
+    >
       
       {/* Sidebar for Map Analysis Controls */}
       <div 
         className={`map-sidebar glass-panel ${showLayerPanel ? 'visible' : 'hidden'}`}
         style={{
-          width: showLayerPanel ? '35%' : '0',
-          minWidth: showLayerPanel ? '300px' : '0',
+          width: isMobile ? '100%' : showLayerPanel ? '35%' : '0',
+          minWidth: isMobile ? '100%' : showLayerPanel ? '300px' : '0',
           margin: '0',
-          borderTopRightRadius: 0,
+          borderTopRightRadius: isMobile ? 'var(--radius-lg)' : 0,
           borderBottomRightRadius: 0,
           transition: 'all 0.3s ease',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          zIndex: 10
+          zIndex: 10,
+          boxShadow: isMobile && showLayerPanel ? '0 -18px 40px rgba(0, 0, 0, 0.42)' : undefined,
         }}
       >
         <div style={{ padding: 'var(--space-md)', borderBottom: '1px solid var(--border-light)' }}>
+          <div
+            style={{
+              width: '48px',
+              height: '4px',
+              borderRadius: '999px',
+              background: 'rgba(255,255,255,0.2)',
+              margin: isMobile ? '0 auto var(--space-sm)' : '0 0 var(--space-sm)',
+            }}
+          />
           <h2 style={{ fontSize: 'var(--font-xl)', fontWeight: 'var(--weight-semibold)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Layers size={20} className="text-accent-blue" />
             Analysis Layers
@@ -203,9 +235,12 @@ const MapExplorer: React.FC = () => {
             width: '40px',
             height: '40px',
             borderRadius: '50%',
-            zIndex: 20
+            zIndex: 20,
+            boxShadow: '0 10px 24px rgba(0,0,0,0.35)',
           }}
           onClick={() => setShowLayerPanel(!showLayerPanel)}
+          aria-label={showLayerPanel ? 'Hide analysis layers' : 'Show analysis layers'}
+          aria-expanded={showLayerPanel}
         >
           <Layers size={20} color={showLayerPanel ? 'var(--accent-blue)' : 'var(--text-primary)'} />
         </button>
@@ -218,10 +253,14 @@ const MapExplorer: React.FC = () => {
             zIndex: 20,
             padding: '0.5rem 0.75rem',
             borderRadius: 'var(--radius-md)',
-            background: 'rgba(2,6,23,0.75)',
+            background: 'rgba(2,6,23,0.82)',
             border: '1px solid var(--border-light)',
             color: 'var(--text-primary)',
             fontSize: 'var(--font-xs)',
+            maxWidth: isMobile ? 'calc(100% - 92px)' : 'none',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}
         >
           {visibleLayers} layer{visibleLayers === 1 ? '' : 's'} active
@@ -278,13 +317,21 @@ const MapExplorer: React.FC = () => {
         @media (max-width: 768px) {
           .map-sidebar {
             position: absolute !important;
-            bottom: 0;
+            bottom: 88px;
             left: 0;
             width: 100% !important;
             min-width: 100% !important;
-            height: 50% !important;
+            height: min(68vh, 560px) !important;
             border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
-            transform: translateY(${showLayerPanel ? '0' : '100%'});
+            transform: translateY(${showLayerPanel ? '0' : 'calc(100% + 88px)'});
+          }
+
+          .map-explorer-container {
+            padding-bottom: 88px;
+          }
+
+          .map-sidebar .layer-item {
+            padding: var(--space-sm);
           }
         }
       `}</style>
