@@ -40,16 +40,21 @@ const SiteDetailPanel: React.FC<SiteDetailPanelProps> = ({ site, onClose }) => {
       {site && (
         <>
           {/* Header */}
-          <div className="flex-between" style={{ padding: 'var(--space-md)', borderBottom: '1px solid var(--border-light)' }}>
-            <div>
-              <div style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)', fontWeight: 'bold', textTransform: 'uppercase' }}>
-                Rank #{site.rank}
+            <div className="flex-between" style={{ padding: 'var(--space-md)', borderBottom: '1px solid var(--border-light)' }}>
+              <div>
+                <div style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                  Rank #{site.rank}
+                </div>
+                <h2 style={{ fontSize: 'var(--font-2xl)', fontWeight: 'bold', color: 'var(--accent-blue)', marginTop: '-4px' }}>
+                  {site.score.toFixed(1)}
+                </h2>
               </div>
-              <h2 style={{ fontSize: 'var(--font-2xl)', fontWeight: 'bold', color: 'var(--accent-blue)', marginTop: '-4px' }}>
-                {site.score.toFixed(1)}
-              </h2>
-            </div>
-              <button onClick={onClose} style={{ padding: '4px', borderRadius: '50%', background: 'var(--bg-secondary)' }}>
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close site details"
+                style={{ padding: '4px', borderRadius: '50%', background: 'var(--bg-secondary)' }}
+              >
                 <X size={18} />
               </button>
             </div>
@@ -117,6 +122,7 @@ const SiteDetailPanel: React.FC<SiteDetailPanelProps> = ({ site, onClose }) => {
                 <select 
                   value={status}
                   onChange={(event) => setStatus(event.target.value)}
+                  aria-label="Analyst override status"
                   style={{ width: '100%', padding: 'var(--space-sm)', background: 'var(--bg-secondary)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', color: 'var(--text-primary)', outline: 'none' }}
                 >
                   <option value="approved">✅ Approved</option>
@@ -128,12 +134,14 @@ const SiteDetailPanel: React.FC<SiteDetailPanelProps> = ({ site, onClose }) => {
                 placeholder="Enter justification to override this recommendation..."
                 value={justification}
                 onChange={(event) => setJustification(event.target.value)}
+                aria-label="Override justification"
                 style={{ width: '100%', minHeight: '80px', background: 'var(--bg-secondary)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', padding: 'var(--space-sm)', color: 'var(--text-primary)', fontFamily: 'inherit', fontSize: 'var(--font-sm)', resize: 'vertical' }}
               ></textarea>
               <button
                 className="btn-secondary"
                 type="button"
                 onClick={handleUpdate}
+                aria-label="Save analyst override"
                 style={{ width: '100%', marginTop: 'var(--space-sm)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
               >
                 <UserCog size={16} /> Update Status

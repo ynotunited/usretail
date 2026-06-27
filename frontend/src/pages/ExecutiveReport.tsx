@@ -14,6 +14,7 @@ const ExecutiveReport: React.FC = () => {
             className="btn-secondary"
             type="button"
             onClick={() => setLastAction('CSV export prepared')}
+            aria-label="Export executive report as CSV"
             style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}
           >
             <Download size={16} /> Export CSV
@@ -22,6 +23,7 @@ const ExecutiveReport: React.FC = () => {
             className="btn-primary"
             type="button"
             onClick={() => setLastAction('PDF export prepared')}
+            aria-label="Export executive report as PDF"
             style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}
           >
             <Printer size={16} /> Export PDF

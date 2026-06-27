@@ -12,6 +12,13 @@ const SitesList: React.FC = () => {
   const [selectedSite, setSelectedSite] = useState<any | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
+  const handleRowKeyDown = (event: React.KeyboardEvent<HTMLTableRowElement>, site: any) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      setSelectedSite(site);
+    }
+  };
+
   return (
     <div className="sites-container" style={{ display: 'flex', height: '100%', width: '100%' }}>
       
@@ -23,6 +30,7 @@ const SitesList: React.FC = () => {
             className="btn-secondary"
             type="button"
             onClick={() => setMessage('CSV export prepared')}
+            aria-label="Export candidate sites as CSV"
             style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}
           >
             <BarChart2 size={16} /> Export CSV
@@ -60,6 +68,10 @@ const SitesList: React.FC = () => {
                     transition: 'background 0.2s'
                   }}
                   onClick={() => setSelectedSite(site)}
+                  onKeyDown={(event) => handleRowKeyDown(event, site)}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Open details for site ${site.rank} with score ${site.score.toFixed(1)}`}
                   className="table-row-hover"
                 >
                   <td style={{ padding: 'var(--space-md)' }}>

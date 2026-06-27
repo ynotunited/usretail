@@ -125,14 +125,18 @@ const DataImports: React.FC = () => {
       </div>
 
       {/* Tab Bar */}
-      <div style={{ display: 'flex', gap: '4px', marginBottom: 'var(--space-lg)', borderBottom: '1px solid var(--border-light)', paddingBottom: '0' }}>
+      <div role="tablist" aria-label="Data hub sections" style={{ display: 'flex', gap: '4px', marginBottom: 'var(--space-lg)', borderBottom: '1px solid var(--border-light)', paddingBottom: '0' }}>
         {TABS.map((tab, i) => {
           const isActive = activeTab === i;
           const hasBadge = i === 1 && MOCK_VALIDATION.summary.errors > 0;
           return (
             <button
+              type="button"
               key={tab}
               onClick={() => setActiveTab(i)}
+              aria-pressed={activeTab === i}
+              aria-controls={`data-tab-panel-${i}`}
+              aria-label={`Show ${tab} tab`}
               style={{
                 padding: '8px 16px',
                 background: 'none',
@@ -162,13 +166,22 @@ const DataImports: React.FC = () => {
 
         {/* ── Tab 0: Upload ──────────────────────────────────────────────── */}
         {activeTab === 0 && (
-          <div style={{ maxWidth: '640px', margin: '0 auto' }}>
+          <div id="data-tab-panel-0" role="tabpanel" aria-label="Upload tab" style={{ maxWidth: '640px', margin: '0 auto' }}>
             <div
               className="glass-panel"
               onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={() => setIsDragging(false)}
               onDrop={handleDrop}
               onClick={() => fileRef.current?.click()}
+              role="button"
+              tabIndex={0}
+              aria-label="Upload a dataset"
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  fileRef.current?.click();
+                }
+              }}
               style={{
                 padding: 'var(--space-xl)',
                 textAlign: 'center',
@@ -209,7 +222,7 @@ const DataImports: React.FC = () => {
 
         {/* ── Tab 1: Validation Results ──────────────────────────────────── */}
         {activeTab === 1 && (
-          <div>
+          <div id="data-tab-panel-1" role="tabpanel" aria-label="Validation results tab">
             {/* Summary */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-md)', marginBottom: 'var(--space-lg)' }}>
               {[
@@ -279,7 +292,7 @@ const DataImports: React.FC = () => {
 
         {/* ── Tab 2: Duplicates ──────────────────────────────────────────── */}
         {activeTab === 2 && (
-          <div>
+          <div id="data-tab-panel-2" role="tabpanel" aria-label="Duplicates tab">
             {dupRows.length === 0 ? (
               <div style={{ textAlign: 'center', padding: 'var(--space-xl)', color: 'var(--text-secondary)' }}>
                 <CheckCircle size={40} color="var(--accent-emerald)" style={{ marginBottom: 'var(--space-md)' }} />
@@ -339,7 +352,7 @@ const DataImports: React.FC = () => {
 
         {/* ── Tab 3: Data Lineage ────────────────────────────────────────── */}
         {activeTab === 3 && (
-          <div>
+          <div id="data-tab-panel-3" role="tabpanel" aria-label="Data lineage tab">
             <div style={{ marginBottom: 'var(--space-lg)' }}>
               <div className="flex-between" style={{ marginBottom: 'var(--space-md)' }}>
                 <div>
