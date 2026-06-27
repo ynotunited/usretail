@@ -41,6 +41,7 @@ jobs:
         run: npm ci
 
       - name: Build frontend
+        # Fresh commit to retrigger a clean Pages deployment.
         run: npm run build
 
       - name: Add SPA fallback
