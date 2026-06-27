@@ -71,7 +71,6 @@ const MapExplorer: React.FC = () => {
         height: '100%',
         width: '100%',
         position: 'relative',
-        paddingBottom: isMobile ? '88px' : '0',
       }}
     >
       
@@ -89,7 +88,7 @@ const MapExplorer: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           zIndex: 10,
-          boxShadow: isMobile && showLayerPanel ? '0 -18px 40px rgba(0, 0, 0, 0.42)' : undefined,
+          boxShadow: isMobile && showLayerPanel ? '0 10px 36px rgba(0, 0, 0, 0.28)' : undefined,
         }}
       >
         <div style={{ padding: 'var(--space-md)', borderBottom: '1px solid var(--border-light)' }}>
@@ -190,12 +189,12 @@ const MapExplorer: React.FC = () => {
         </div>
 
         <div style={{ padding: 'var(--space-md)', borderTop: '1px solid var(--border-light)' }}>
-          <button
-            className="btn-primary"
-            type="button"
-            onClick={() => navigate('/analysis')}
-            style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
-          >
+        <button
+          className="btn-primary"
+          type="button"
+          onClick={() => navigate('/analysis')}
+          style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', minHeight: '48px' }}
+        >
             <Activity size={18} />
             Run Analysis
           </button>
@@ -315,23 +314,41 @@ const MapExplorer: React.FC = () => {
         }
 
         @media (max-width: 768px) {
-          .map-sidebar {
-            position: absolute !important;
-            bottom: 88px;
-            left: 0;
-            width: 100% !important;
-            min-width: 100% !important;
-            height: min(68vh, 560px) !important;
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
-            transform: translateY(${showLayerPanel ? '0' : 'calc(100% + 88px)'});
+          .map-explorer-container {
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
           }
 
-          .map-explorer-container {
-            padding-bottom: 88px;
+          .map-area {
+            flex: 0 0 48vh !important;
+            min-height: 48vh;
+            order: 1;
+          }
+
+          .map-sidebar {
+            position: relative !important;
+            bottom: auto;
+            left: auto;
+            width: 100% !important;
+            min-width: 100% !important;
+            height: auto !important;
+            max-height: none !important;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg) !important;
+            transform: none !important;
+            order: 2;
           }
 
           .map-sidebar .layer-item {
             padding: var(--space-sm);
+          }
+
+          .map-sidebar .scrollable-y {
+            max-height: none;
+          }
+
+          .map-sidebar .btn-primary {
+            width: 100%;
           }
         }
       `}</style>
